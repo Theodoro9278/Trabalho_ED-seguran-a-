@@ -3,26 +3,36 @@
 
 #include "TARVB.c"
 
+
 void main(int argc, char ** argv){
     FILE * f;
-    for (size_t i = 1; i < argc; i++)
+    TARVB * arv = TARVB_Inicializa();
+    int counter = 1;
+    NODE node[argc - 1];
+    for (int i = 1; i < argc; i++)
     {
         f = fopen(argv[i], "rb");
         if(f){
             fseek(f,0,SEEK_SET);
             int lenght;
+            ARQ arquivo;
+            node[i - 1].nome = argv[i];
+            node[i - 1].no = counter;
             while(1){
-                char buffer[TAM];
-                lenght = fread(buffer,SEEK_CUR,TAM - 1,f);
+                VAL buffer;
+                lenght = fread(buffer.texto,SEEK_CUR,TAM - 1,f);
                 if(!lenght){
                     break;
                 }
-                buffer[lenght] = '\0';
-                printf("%s\n",buffer);
-            }
-            
+                buffer.texto[lenght] = '\0';
+                buffer.id = counter;
+                buffer.prox_id = ++counter;
+                if(lenght < TAM - 1) buffer.prox_id = -1;
+                print_VAL(buffer);
 
+            }
         }
         fclose(f);
     }
+    print_NODE(node,argc - 1);
 }

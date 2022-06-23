@@ -1,13 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define TAM 11
 
 typedef struct inode{
-  char id[100];
-  int node;
-  struct inode * prox;
-  
+  char * nome;
+  int no;  
 }NODE;
 
 //Valores internos de um no;
