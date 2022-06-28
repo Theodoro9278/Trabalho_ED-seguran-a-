@@ -3,7 +3,7 @@
 TARVB *TARVB_Cria(int t){
   TARVB* novo = (TARVB*)malloc(sizeof(TARVB));
   novo->nchaves = 0;
-  novo->chave =(VAL*)malloc(sizeof(VAL*)*((t*2)-1));
+  novo->chave =(VAL*)malloc(sizeof(VAL)*((t*2)-1));
   novo->folha=1;
   novo->filho = (TARVB**)malloc(sizeof(TARVB*)*t*2);
   int i;
@@ -99,4 +99,24 @@ void print_NODE(NODE * node,int n){
         printf("no: %d\n",node[i].no);
     }
     
+}
+
+VAL * VAL_Inicializa(){
+    VAL * val = (VAL *)malloc(sizeof(VAL));
+}
+
+void imp_rec(TARVB *a, int andar){
+  if(a){
+    int i,j;
+    for(i=0; i<=a->nchaves-1; i++){
+      imp_rec(a->filho[i],andar+1);
+      for(j=0; j<=andar; j++) printf("\t");
+      printf("%d\n", a->chave[i].id);
+    }
+    imp_rec(a->filho[i],andar+1);
+  }
+}
+
+void TARVB_Imprime(TARVB *a){
+  imp_rec(a, 0);
 }

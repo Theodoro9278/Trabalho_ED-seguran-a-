@@ -3,6 +3,7 @@
 
 #include "TARVB.c"
 
+#define Const_t 2
 
 void main(int argc, char ** argv){
     FILE * f;
@@ -28,11 +29,10 @@ void main(int argc, char ** argv){
                 buffer.id = counter;
                 buffer.prox_id = ++counter;
                 if(lenght < TAM - 1) buffer.prox_id = -1;
-                print_VAL(buffer);
-
+                arv = TARVB_Insere(arv,buffer,Const_t);
             }
         }
         fclose(f);
     }
-    print_NODE(node,argc - 1);
+    TARVB_Imprime(arv);
 }
