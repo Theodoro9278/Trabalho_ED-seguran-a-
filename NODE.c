@@ -1,22 +1,22 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 typedef struct inode{
   char * nome;
   int no;
   struct inode * prox;
 }NODE;
 
-NODE * NODE_Insere(NODE * n ,char * nome, int no){
-    if(!n){
-        NODE * n = (NODE *)malloc(sizeof(NODE));
-        n->nome = nome;
-        n->no = no;
-        n->prox = NULL;
-        return n;
-    }
+void NODE_Insere(NODE * n ,char * nome, int no){
     NODE * aux = n;
-    while (aux->prox){aux = aux->prox;}
-    aux->prox = NODE_Insere(aux->prox,nome,no);
-    return n;
-    
+    while (aux)
+    {
+        aux = aux->prox;
+    }
+    aux = (NODE *)malloc(sizeof(NODE));
+    aux->no = no;
+    aux->nome = nome;
+    aux->prox = NULL;
 }
 
 void NODE_Libera(NODE * n){
