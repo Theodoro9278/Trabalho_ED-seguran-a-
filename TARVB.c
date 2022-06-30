@@ -105,15 +105,6 @@ void print_VAL(VAL v){
     printf("id: %d\ntexto: %s\nprox_id: %d\n",v.id,v.texto,v.prox_id);
 }
 
-void print_NODE(NODE * node,int n){
-    for (int i = 0; i < n; i++)
-    {
-        printf("nome: %s\n",node[i].nome);
-        printf("no: %d\n",node[i].no);
-    }
-    
-}
-
 VAL * VAL_Inicializa(){
     VAL * val = (VAL *)malloc(sizeof(VAL));
 }

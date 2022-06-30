@@ -4,11 +4,6 @@
 
 #define TAM 11
 
-typedef struct inode{
-  char * nome;
-  int no;  
-}NODE;
-
 //Valores internos de um no;
 typedef struct value_no{
   int id;

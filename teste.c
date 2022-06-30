@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "TARVB.c"
+#include "NODE.c"
 
 #define Const_t 2
 
@@ -9,16 +10,17 @@ void main(int argc, char ** argv){
     FILE * f;
     TARVB * arv = TARVB_Inicializa();
     int counter = 1;
-    NODE node[argc - 1];
+    NODE * node = NULL;
     for (int i = 1; i < argc; i++)
     {
+        node = NODE_Insere(node,argv[i],counter);
         f = fopen(argv[i], "rb");
         if(f){
             fseek(f,0,SEEK_SET);
             int lenght;
             ARQ arquivo;
-            node[i - 1].nome = argv[i];
-            node[i - 1].no = counter;
+            node->nome = argv[i];
+            node->no = counter;
             while(1){
                 VAL buffer;
                 lenght = fread(buffer.texto,SEEK_CUR,TAM - 1,f);
@@ -32,8 +34,10 @@ void main(int argc, char ** argv){
                 arv = TARVB_Insere(arv,buffer,Const_t);
             }
         }
+        node = node->prox;
         fclose(f);
     }
+    Imprime_NODE(node);
     arv = TARVB_Retira(arv,8,Const_t);
     TARVB_Change_Prox_ID(arv,8,9);
     TARVB_Imprime(arv);
