@@ -34,5 +34,7 @@ void main(int argc, char ** argv){
         }
         fclose(f);
     }
+    arv = TARVB_Retira(arv,8,Const_t);
+    TARVB_Change_Prox_ID(arv,8,9);
     TARVB_Imprime(arv);
 }
