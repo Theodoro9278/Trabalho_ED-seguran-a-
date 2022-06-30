@@ -154,7 +154,7 @@ void Limpa_Remocao(TARVB *a){ //ultima revisao: 04/2020
 TARVB* remover(TARVB* arv, VAL ch, int t){
   if(!arv) return arv;
   int i;
-  printf("Removendo %d...\n", ch);
+  printf("Removendo %d...\n", ch.id);
   for(i = 0; i<arv->nchaves && arv->chave[i].id < ch.id; i++);
   if(i < arv->nchaves && ch.id == arv->chave[i].id){ //CASOS 1, 2A, 2B e 2C
     if(arv->folha){ //CASO 1
