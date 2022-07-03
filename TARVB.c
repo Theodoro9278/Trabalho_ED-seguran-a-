@@ -324,7 +324,7 @@ void *TARVB_Change_Prox_ID(TARVB* a, int old, int prox){
     for(i=0; i<=a->nchaves-1; i++){
       if(a->chave[i].prox_id == old){
         a->chave[i].prox_id = prox;
-        return;
+        return NULL;
       }
     }
     for (i = 0; i <= a->nchaves; i++)

@@ -7,21 +7,23 @@
 #define Const_t 2
 
 void main(int argc, char ** argv){
-    FILE * f;
+    FILE * fp;
     TARVB * arv = TARVB_Inicializa();
     int counter = 1;
-    NODE * node = NULL;
+    int size = 0;
+    NODE * node = (NODE *)malloc(sizeof(NODE) * size);
     for (int i = 1; i < argc; i++)
     {
-        f = fopen(argv[i], "rb");
-        if(f){
-            fseek(f,0,SEEK_SET);
+        fp = fopen(argv[i], "rb");
+        if(!fp)exit(1);
+        if(fp){
+            fseek(fp,0,SEEK_SET);
             int lenght;
             ARQ arquivo;
-            NODE_Insere(node,argv[i],counter);
+            node = NODE_Insere(node,counter,argv[i],&size);
             while(1){
                 VAL buffer;
-                lenght = fread(buffer.texto,SEEK_CUR,TAM - 1,f);
+                lenght = fread(buffer.texto,SEEK_CUR,TAM - 1,fp);
                 if(!lenght){
                     break;
                 }
@@ -32,10 +34,12 @@ void main(int argc, char ** argv){
                 arv = TARVB_Insere(arv,buffer,Const_t);
             }
         }
-        fclose(f);
+        fclose(fp);
     }
-    Imprime_NODE(node);
-    //arv = TARVB_Retira(arv,8,Const_t);
-    //TARVB_Change_Prox_ID(arv,8,9);
-    //TARVB_Imprime(arv);
+
+    arv = TARVB_Retira(arv,8,Const_t);
+    TARVB_Change_Prox_ID(arv,8,9);
+    TARVB_Imprime(arv);
+    node = NODE_Retira(node, argv[1],&size);
+    NODE_Imprime(node,size);
 }

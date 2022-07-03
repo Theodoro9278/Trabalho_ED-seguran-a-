@@ -1,47 +1,48 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 typedef struct inode{
   char * nome;
   int no;
-  struct inode * prox;
 }NODE;
 
-void NODE_Insere(NODE * n ,char * nome, int no){
-    NODE * aux = n;
-    while (aux)
+int NODE_Busca(NODE * node, int size, char * nome){
+    for (int i = 0; i < size; i++)
     {
-        aux = aux->prox;
+        if(strcmp(nome, node[i].nome) == 0) return i;
     }
-    aux = (NODE *)malloc(sizeof(NODE));
-    aux->no = no;
-    aux->nome = nome;
-    aux->prox = NULL;
+    return -1;
 }
 
-void NODE_Libera(NODE * n){
-    while (n)
-    {
-        NODE * temp = n;
-        n = n->prox;
-        free(temp);
-    }    
+NODE * NODE_Insere(NODE * node, int no, char * nome, int * size){
+    if(NODE_Busca(node,*size,nome) ==  -1 ){
+        *size += 1;
+        node = (NODE*)realloc(node,(*size)*sizeof(NODE));
+        node[*size - 1].no = no;
+        node[*size - 1].nome = nome;
+    }
+    return node;
 }
 
-NODE * NODE_Busca(NODE * n, char * nome){
-    while (n)
-    {
-        if(strcmp(n->nome,nome) == 0) break;
-        n = n->prox;
+NODE * NODE_Retira(NODE * node, char * nome, int * size){
+    int pos = NODE_Busca(node,*size,nome);
+    if(pos >= 0){
+        for (int i = pos; i < *size - 1; i++)
+        {
+            node[i] = node[i + 1];
+        }
+        *size -= 1;
+        node = (NODE *)realloc(node,sizeof(NODE) * (*size));
     }
-    return n;
+    return node;
 }
 
-void Imprime_NODE(NODE * n){
-    while (n)
+
+
+void NODE_Imprime(NODE * node,int size){
+    for (int i = 0; i < size; i++)
     {
-        printf("|%s|%d|\n",n->nome,n->no);
-        n = n->prox;
+        printf("nome:%s no:%d\n",node[i].nome,node[i].no);
     }
-    
 }
