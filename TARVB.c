@@ -128,6 +128,7 @@ void TARVB_Imprime(TARVB *a){
 VAL VAL_Busca(TARVB * x, int ch){
   VAL h;
   h.id = -1;
+  h.prox_id = -1;
   if(!x) return h;
   int i = 0;
   while(i < x->nchaves && ch > x->chave[i].id) i++;

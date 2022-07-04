@@ -6,6 +6,29 @@
 
 #define Const_t 2
 
+
+TARVB * Retirar_Arquivo(TARVB * arv, NODE node, int t){
+    VAL buffer = VAL_Busca(arv,node.no);
+    while (buffer.id != -1)
+    {
+        arv = TARVB_Retira(arv,buffer.id,t);
+        buffer = VAL_Busca(arv,buffer.prox_id);
+    }
+    return arv;
+}
+
+void Imprimir_Arquivo(NODE node, TARVB * arv){
+    printf("\n");
+    VAL buffer = VAL_Busca(arv,node.no);
+    while (buffer.id != -1)
+    {
+        printf("%d: %s\n",buffer.id,buffer.texto);
+        buffer = VAL_Busca(arv,buffer.prox_id);
+    }
+    printf("\n");
+}
+
+
 void main(int argc, char ** argv){
     FILE * fp;
     TARVB * arv = TARVB_Inicializa();
@@ -36,10 +59,42 @@ void main(int argc, char ** argv){
         }
         fclose(fp);
     }
-
-    arv = TARVB_Retira(arv,8,Const_t);
-    TARVB_Change_Prox_ID(arv,8,9);
     TARVB_Imprime(arv);
-    node = NODE_Retira(node, argv[1],&size);
-    NODE_Imprime(node,size);
+    int num = 0;
+    char string[255];
+    while(1){
+        printf("Formato numero arquivo\n0: adicionar\n1: retirar\n2: apagar arquivo\n3: imprimir arquivo\n4: imprimir tabela\n5: imprimir arvore\n-1: sair\n");
+        scanf("%d %s",&num,string);
+        int pos =  NODE_Busca(node,size,string);
+        VAL buffer = VAL_Busca(arv,node[pos].no);
+        if(num == -1) break;
+        if(pos == -1 && num >= 0 && num <= 3) {
+            printf("Arquivo nao existe\n\n");
+            continue;
+        }
+        switch (num)
+        {
+        case 0:
+               
+            break;
+        case 1:
+            
+            break;;
+        case 2:
+            arv = Retirar_Arquivo(arv,node[pos],Const_t);
+            node = NODE_Retira(node,node[pos].nome,&size);
+            break;
+        case 3:
+            Imprimir_Arquivo(node[pos],arv);
+            break;
+        case 4:
+            NODE_Imprime(node,size);
+            break;
+        case 5:
+            TARVB_Imprime(arv);
+            break;
+        default:
+            break;
+        }
+    }
 }
