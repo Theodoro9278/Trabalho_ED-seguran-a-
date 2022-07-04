@@ -31,6 +31,7 @@ int Imprimir_Arquivo(NODE node, TARVB * arv){
     return resp;
 }
 
+
 TARVB * Inserir_na_Posicao(TARVB * arv,NODE * node, int t,VAL k,int ant, int prox){
     printf("\n");
     if(ant = -1 || prox != -1){
@@ -39,6 +40,7 @@ TARVB * Inserir_na_Posicao(TARVB * arv,NODE * node, int t,VAL k,int ant, int pro
             node->no = k.id;
         }
     }else if(ant != -1 || prox == -1){
+
     }
     return TARVB_Insere(arv,k,t);
 
@@ -90,9 +92,8 @@ void main(int argc, char ** argv){
         }
         switch (num)
         {
-        int last_pos;
         case 0:
-            last_pos = Imprimir_Arquivo(node[pos],arv);
+            Imprimir_Arquivo(node[pos],arv);
             int pos1,pos2;
             printf("adicionar entre as posicoes: ");
             scanf("%d %d",&pos1, &pos2);
