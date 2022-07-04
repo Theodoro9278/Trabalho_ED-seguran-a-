@@ -17,15 +17,31 @@ TARVB * Retirar_Arquivo(TARVB * arv, NODE node, int t){
     return arv;
 }
 
-void Imprimir_Arquivo(NODE node, TARVB * arv){
+int Imprimir_Arquivo(NODE node, TARVB * arv){
     printf("\n");
     VAL buffer = VAL_Busca(arv,node.no);
+    int resp = -1;
     while (buffer.id != -1)
     {
         printf("%d: %s\n",buffer.id,buffer.texto);
+        resp = buffer.id;
         buffer = VAL_Busca(arv,buffer.prox_id);
     }
     printf("\n");
+    return resp;
+}
+
+TARVB * Inserir_na_Posicao(TARVB * arv,NODE * node, int t,VAL k,int ant, int prox){
+    printf("\n");
+    if(ant = -1 || prox != -1){
+        if(prox == node->no){
+            k.prox_id = node->no;
+            node->no = k.id;
+        }
+    }else if(ant != -1 || prox == -1){
+    }
+    return TARVB_Insere(arv,k,t);
+
 }
 
 
@@ -74,8 +90,25 @@ void main(int argc, char ** argv){
         }
         switch (num)
         {
+        int last_pos;
         case 0:
-               
+            last_pos = Imprimir_Arquivo(node[pos],arv);
+            int pos1,pos2;
+            printf("adicionar entre as posicoes: ");
+            scanf("%d %d",&pos1, &pos2);
+            VAL buffer;
+            buffer.id = counter++;
+            buffer.prox_id = pos2;
+            printf("Insira o texto de tamanho %d: ",TAM - 1);
+            char * string;
+            scanf("%s",string);
+            if(strlen(string) > TAM){
+                printf("Tamanho maior que %d\n",TAM - 1);
+                break;
+            }
+            strcpy(buffer.texto,string);
+            arv = Inserir_na_Posicao(arv,&node[pos],Const_t,buffer,pos1,pos2);
+            
             break;
         case 1:
             

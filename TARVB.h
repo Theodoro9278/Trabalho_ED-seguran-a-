@@ -9,6 +9,7 @@ typedef struct value_no{
   int id;
   char texto[TAM];
   int prox_id;
+  int ant_id;
 }VAL;
 
 typedef struct arquivo{
