@@ -32,17 +32,28 @@ int Imprimir_Arquivo(NODE node, TARVB * arv){
 }
 
 
-TARVB * Inserir_na_Posicao(TARVB * arv,NODE * node, int t,VAL k,int ant, int prox){
+TARVB * Inserir_na_Posicao(TARVB * arv,NODE * node, int t,VAL k,int ant, int prox,int last){
     printf("\n");
-    if(ant = -1 || prox != -1){
+    if(ant = -1 && prox != -1){
         if(prox == node->no){
             k.prox_id = node->no;
             node->no = k.id;
+            arv = TARVB_Insere(arv,k,t);
         }
-    }else if(ant != -1 || prox == -1){
-
+    }else if(ant != -1 && prox == -1){
+        if(ant == last){
+            TARVB * tmp = TARVB_Busca(arv,last);
+            for (int i = 0; i < tmp->nchaves; i++){
+                if(tmp->chave[i].id == last){
+                    tmp->chave[i].prox_id = k.id;
+                    k.id = -1;
+                    arv = TARVB_Insere(arv,k,t);
+                }
+            }
+       }
+       
     }
-    return TARVB_Insere(arv,k,t);
+    return arv;
 
 }
 
@@ -80,11 +91,11 @@ void main(int argc, char ** argv){
     TARVB_Imprime(arv);
     int num = 0;
     char string[255];
+    int last_pos;
     while(1){
         printf("Formato numero arquivo\n0: adicionar\n1: retirar\n2: apagar arquivo\n3: imprimir arquivo\n4: imprimir tabela\n5: imprimir arvore\n-1: sair\n");
         scanf("%d %s",&num,string);
         int pos =  NODE_Busca(node,size,string);
-        VAL buffer = VAL_Busca(arv,node[pos].no);
         if(num == -1) break;
         if(pos == -1 && num >= 0 && num <= 3) {
             printf("Arquivo nao existe\n\n");
@@ -93,7 +104,7 @@ void main(int argc, char ** argv){
         switch (num)
         {
         case 0:
-            Imprimir_Arquivo(node[pos],arv);
+            last_pos = Imprimir_Arquivo(node[pos],arv);
             int pos1,pos2;
             printf("adicionar entre as posicoes: ");
             scanf("%d %d",&pos1, &pos2);
@@ -101,19 +112,26 @@ void main(int argc, char ** argv){
             buffer.id = counter++;
             buffer.prox_id = pos2;
             printf("Insira o texto de tamanho %d: ",TAM - 1);
-            char * string;
+            char string[TAM];
             scanf("%s",string);
             if(strlen(string) > TAM){
                 printf("Tamanho maior que %d\n",TAM - 1);
                 break;
             }
             strcpy(buffer.texto,string);
-            arv = Inserir_na_Posicao(arv,&node[pos],Const_t,buffer,pos1,pos2);
-            
+            arv = Inserir_na_Posicao(arv,&node[pos],Const_t,buffer,pos1,pos2,last_pos);
             break;
         case 1:
-            
-            break;;
+            Imprimir_Arquivo(node[pos],arv);
+            pos1;
+            printf("Insira a posicao a retirar\n");
+            scanf("%d",&pos1);
+            if(node[pos].no == pos1){
+                VAL buffer = VAL_Busca(arv,node[pos].no);
+                node[pos].no = buffer.prox_id;
+            }
+            arv = TARVB_Retira(arv,pos1,Const_t);
+            break;
         case 2:
             arv = Retirar_Arquivo(arv,node[pos],Const_t);
             node = NODE_Retira(node,node[pos].nome,&size);
