@@ -70,6 +70,21 @@ TARVB * Retira_na_Posicao(TARVB * arv,NODE * node, int size,int pos){
 
 }
 
+void Arq_Out(TARVB *arv,int andar){
+    if(!arv){printf("Árvore não encontrada");return;}
+    FILE *arq;
+    arq=fopen("a_out.txt","wb");
+    rewind(arq);
+    int i,j;
+    for(i=0; i<=arv->nchaves-1; i++){
+        Arq_Out(arv->filho[i],andar+1);
+        fwrite(arv->chave->texto,11,arv->nchaves-1,arq);
+    }
+    Arq_Out(arv->filho[i],andar+1);
+}
+
+
+
 void main(int argc, char ** argv){
     FILE * fp;
     TARVB * arv = TARVB_Inicializa();
@@ -154,6 +169,7 @@ void main(int argc, char ** argv){
             TARVB_Imprime(arv);
             break;
         default:
+            Arq_Out(arv,0);
             break;
         }
     }
