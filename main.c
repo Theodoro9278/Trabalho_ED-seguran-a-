@@ -71,6 +71,12 @@ TARVB * Inserir_na_Posicao(TARVB * arv,NODE * node, int t,VAL k,int ant, int pro
             }
        }
        
+    }else{
+        VAL * buffer = VAL_Busca_Ponteiro(arv,ant);
+        if(buffer->prox_id == prox){
+            buffer->prox_id = k.id;
+            arv = TARVB_Insere(arv,k,t);
+        }
     }
     return arv;
 

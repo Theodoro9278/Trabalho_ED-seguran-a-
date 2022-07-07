@@ -138,6 +138,15 @@ VAL VAL_Busca(TARVB * x, int ch){
   return VAL_Busca(x->filho[i], ch);
 }
 
+VAL * VAL_Busca_Ponteiro(TARVB * x, int ch){
+  if(!x) return NULL;
+  int i = 0;
+  while(i < x->nchaves && ch > x->chave[i].id) i++;
+  if(i < x->nchaves && ch == x->chave[i].id) return &x->chave[i];
+  if(x->folha) return NULL;
+  return VAL_Busca_Ponteiro(x->filho[i], ch);
+}
+
 void Limpa_Remocao(TARVB *a){ //ultima revisao: 04/2020
   if(!a) return;
   int i;
