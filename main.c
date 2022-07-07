@@ -34,13 +34,20 @@ int Imprimir_Arquivo(NODE node, TARVB * arv){
 void Arq_Out(TARVB *arv, NODE node){
     if(!arv){printf("Árvore não encontrada");return;}
     FILE *arq;
-    arq=fopen("a_out.txt","wb");
+    char string [255];
+    strcpy(string,strtok(node.nome,".")); 
+    strcat(string,"_output.txt");
+    arq=fopen(string,"wb");
     rewind(arq);
     VAL buffer = VAL_Busca(arv,node.no);
+
     while (buffer.id != -1)
-    {   fwrite(buffer.texto,11,arv->nchaves-1,arq);
-        buffer = VAL_Busca(arv,buffer.prox_id);}
+    {   
+        fwrite(buffer.texto,strlen(buffer.texto),1,arq);
+        buffer = VAL_Busca(arv,buffer.prox_id);
+    }
     fclose(arq);
+    printf("\n");
 }
 
 
@@ -129,7 +136,13 @@ void main(int argc, char ** argv){
                "-1: sair\n");
         scanf("%d %s",&num,string);
         int pos =  NODE_Busca(node,size,string);
-        if(num == -1) break;
+        if(num == -1) {
+             for (int i = 0; i < size; i++)
+            {
+                Arq_Out(arv,node[i]);
+            }
+            break;
+        }
         if(pos == -1 && num >= 0 && num <= 3) {
             printf("Arquivo nao existe\n\n");
             continue;
@@ -175,7 +188,6 @@ void main(int argc, char ** argv){
             TARVB_Imprime(arv);
             break;
         default:
-            Arq_Out(arv,node[pos]);
             break;
         }
     }
