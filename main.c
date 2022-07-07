@@ -31,6 +31,18 @@ int Imprimir_Arquivo(NODE node, TARVB * arv){
     return resp;
 }
 
+void Arq_Out(TARVB *arv, NODE node){
+    if(!arv){printf("Árvore não encontrada");return;}
+    FILE *arq;
+    arq=fopen("a_out.txt","wb");
+    rewind(arq);
+    VAL buffer = VAL_Busca(arv,node.no);
+    while (buffer.id != -1)
+    {   fwrite(buffer.texto,11,arv->nchaves-1,arq);
+        buffer = VAL_Busca(arv,buffer.prox_id);}
+    fclose(arq);
+}
+
 
 TARVB * Inserir_na_Posicao(TARVB * arv,NODE * node, int t,VAL k,int ant, int prox,int last){
     printf("\n");
@@ -70,19 +82,6 @@ TARVB * Retira_na_Posicao(TARVB * arv,NODE * node, int size,int pos){
 
 }
 
-void Arq_Out(TARVB *arv,int andar){
-    if(!arv){printf("Árvore não encontrada");return;}
-    FILE *arq;
-    arq=fopen("a_out.txt","wb");
-    rewind(arq);
-    int i,j;
-    for(i=0; i<=arv->nchaves-1; i++){
-        Arq_Out(arv->filho[i],andar+1);
-        fwrite(arv->chave->texto,11,arv->nchaves-1,arq);
-    }
-    Arq_Out(arv->filho[i],andar+1);
-}
-
 
 
 void main(int argc, char ** argv){
@@ -120,7 +119,14 @@ void main(int argc, char ** argv){
     char string[255];
     int last_pos;
     while(1){
-        printf("Formato numero arquivo\n0: adicionar\n1: retirar\n2: apagar arquivo\n3: imprimir arquivo\n4: imprimir tabela\n5: imprimir arvore\n-1: sair\n");
+        printf("Formato numero arquivo\n"
+               "0: adicionar\n"
+               "1: retirar\n"
+               "2: apagar arquivo\n"
+               "3: imprimir arquivo\n"
+               "4: imprimir tabela\n"
+               "5: imprimir arvore\n"
+               "-1: sair\n");
         scanf("%d %s",&num,string);
         int pos =  NODE_Busca(node,size,string);
         if(num == -1) break;
@@ -169,7 +175,7 @@ void main(int argc, char ** argv){
             TARVB_Imprime(arv);
             break;
         default:
-            Arq_Out(arv,0);
+            Arq_Out(arv,node[pos]);
             break;
         }
     }
