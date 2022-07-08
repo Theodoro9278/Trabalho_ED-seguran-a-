@@ -4,7 +4,6 @@
 #include "TARVB.c"
 #include "NODE.c"
 
-#define Const_t 2
 
 
 TARVB * Retirar_Arquivo(TARVB * arv, NODE node, int t){
@@ -50,6 +49,31 @@ void Arq_Out(TARVB *arv, NODE node){
     printf("\n");
 }
 
+void Arq_Out_Inv(TARVB *arv, NODE node){
+    if(!arv){printf("Árvore não encontrada");return;}
+    int count=0;
+    FILE *arq;
+    char string [255];
+    strcpy(string,strtok(node.nome,".")); 
+    strcat(string,"_output.txt");
+    arq=fopen(string,"wb");
+    rewind(arq);
+    VAL buffer = VAL_Busca(arv,node.no);
+    
+
+    while (buffer.prox_id != -1)
+    {   count+=1;
+        buffer = VAL_Busca(arv,buffer.prox_id);
+    }
+    for (int i = count; i >= 0 ; i--)
+    {
+        fwrite(buffer.texto,strlen(buffer.texto),1,arq);
+        buffer = VAL_Busca(arv,buffer.ant_id);
+    }
+    
+    fclose(arq);
+    printf("\n");
+}
 
 TARVB * Inserir_na_Posicao(TARVB * arv,NODE * node, int t,VAL k,int ant, int prox,int last){
     printf("\n");
@@ -70,7 +94,7 @@ TARVB * Inserir_na_Posicao(TARVB * arv,NODE * node, int t,VAL k,int ant, int pro
                 }
             }
        }
-       
+    
     }else{
         VAL * buffer = VAL_Busca_Ponteiro(arv,ant);
         if(buffer->prox_id == prox){
@@ -82,7 +106,7 @@ TARVB * Inserir_na_Posicao(TARVB * arv,NODE * node, int t,VAL k,int ant, int pro
 
 }
 
-TARVB * Retira_na_Posicao(TARVB * arv,NODE * node, int size,int pos){
+TARVB * Retira_na_Posicao(TARVB * arv,NODE * node, int size,int pos, int Const_t){
     for (int i = 0; i < size; i++)
     {
         if(node[i].no == pos){
@@ -101,8 +125,11 @@ void main(int argc, char ** argv){
     FILE * fp;
     TARVB * arv = TARVB_Inicializa();
     int counter = 1;
-    int size = 0;
+    int size = 0,Const_t;
     NODE * node = (NODE *)malloc(sizeof(NODE) * size);
+    printf("Defina um valor inteiro para t(2 é o menor valor aceito)");
+    scanf("%d",Const_t);
+    if(Const_t<2){printf("Valor menor que 2 não aceito, prosseguiremos com o valor 2 por padrão");Const_t=2;}
     for (int i = 1; i < argc; i++)
     {
         fp = fopen(argv[i], "rb");
@@ -139,6 +166,7 @@ void main(int argc, char ** argv){
                "3: imprimir arquivo\n"
                "4: imprimir tabela\n"
                "5: imprimir arvore\n"
+               "6: imprimir arquivo invertido\n"
                "-1: sair\n");
         scanf("%d %s",&num,string);
         int pos =  NODE_Busca(node,size,string);
@@ -178,7 +206,7 @@ void main(int argc, char ** argv){
             pos1;
             printf("Insira a posicao a retirar\n");
             scanf("%d",&pos1);
-            arv = Retira_na_Posicao(arv,node,size,pos1);
+            arv = Retira_na_Posicao(arv,node,size,pos1,Const_t);
             break;
         case 2:
             arv = Retirar_Arquivo(arv,node[pos],Const_t);
@@ -192,6 +220,12 @@ void main(int argc, char ** argv){
             break;
         case 5:
             TARVB_Imprime(arv);
+            break;
+        case 6:
+         for (int i = 0; i < size; i++)
+            {
+            Arq_Out_Inv(arv,node[pos]);
+            }
             break;
         default:
             break;
